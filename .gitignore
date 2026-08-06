@@ -1,0 +1,10 @@
+*.pyc
+__pycache__/
+*.log
+.idea/
+.vscode/
+*.zip
+*.tar.gz
+
+# Odoo
+*.egg-info/

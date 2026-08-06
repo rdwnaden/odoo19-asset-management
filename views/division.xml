@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="itsm_division_view_form" model="ir.ui.view">
+        <field name="name">itsm.division.view.form</field>
+        <field name="model">itsm.division</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="itsm_division_view_tree" model="ir.ui.view">
+        <field name="name">itsm.division.view.tree</field>
+        <field name="model">itsm.division</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="division_action" model="ir.actions.act_window">
+        <field name="name">Division List</field>
+        <field name="res_model">itsm.division</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Asset Menu -->
+    <menuitem id="menu_asset_division"
+            name="Division"
+            parent="menu_asset_configuration"
+            action="division_action"
+            sequence="20"/>
+
+</odoo>

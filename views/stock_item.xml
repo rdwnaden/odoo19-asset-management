@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+
+    <!-- Tree View -->
+    <record id="stock_item_view_tree" model="ir.ui.view">
+        <field name="name">asset.stock.item.tree</field>
+        <field name="model">asset.stock.item</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="qty_available" width="150"/>
+                <field name="unit"/>
+                <field name="minimum_stock" width="150"/>
+                <field name="stock_status"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="stock_item_view_form" model="ir.ui.view">
+        <field name="name">asset.stock.item.form</field>
+        <field name="model">asset.stock.item</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group name="item_information" string="ITEM INFORMATION">
+                            <field name="name"/>
+                            <field name="category_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="description"/>
+                        </group>
+
+                        <group name="item_measurement" string="MEASUREMENT">
+                            <field name="unit"/>
+                            <field name="minimum_stock"/>
+                            <field name="qty_available" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Movement History">
+                            <field name="movement_ids"
+                                readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="movement_type"/>
+                                    <field name="qty"/>
+                                    <field name="reference"/>
+                                    <field name="employee_id"/>
+                                    <field name="division_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="stock_item_action" model="ir.actions.act_window">
+        <field name="name">Stock Item</field>
+        <field name="res_model">asset.stock.item</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <menuitem
+        id="asset_inventory_menu"
+        name="Inventory"
+        parent="menu_asset_root"
+        sequence="30"/>
+
+    <menuitem
+        id="stock_menu"
+        name="Stock"
+        parent="asset_inventory_menu"
+        sequence="5"/>
+
+    <menuitem
+        id="stock_item_menu"
+        name="Item"
+        parent="stock_menu"
+        action="stock_item_action"
+        sequence="10"/>
+
+    <menuitem
+        id="stock_action"
+        name="Action"
+        parent="asset_inventory_menu"
+        sequence="15"/>
+
+</odoo>

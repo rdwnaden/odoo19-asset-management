@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+<t t-name="asset_management.InventoryDashboard">
+<div class="o_asset_dashboard container-fluid mt-4">
+    <h2>Inventory Dashboard</h2>
+    <br/>
+    <div class="row g-3">
+    <!-- <h4>Inventory Status</h4> -->
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card total" t-on-click="() => this.openItems()">
+                <div class="icon">📦</div>
+                <div>
+                    <span>Total Item</span>
+                    <h1>
+                        <t t-esc="data.total_item"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card available" t-on-click="() => this.openItems()">
+                <div class="icon">📊</div>
+                <div>
+                    <span>Total Stock</span>
+                    <h1>
+                        <t t-esc="data.total_stock"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card repair" t-on-click="() => this.openItems('low_stock')">
+                <div class="icon">⚠️</div>
+                <div>
+                    <span>Low Stock</span>
+                    <h1>
+                        <t t-esc="data.low_stock"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card in_use" t-on-click="() => this.openItems('out_stock')">
+                <div class="icon">❌</div>
+                <div>
+                    <span>Out of Stock</span>
+                    <h1>
+                        <t t-esc="data.out_stock"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="asset_chart_card">
+            <h4>Item By Category</h4>
+            <div class="row g-3">
+                <t t-foreach="data.categories"
+                t-as="cat"
+                t-key="cat.id">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="asset_card category" t-on-click="() => this.openCategory(cat.id)">
+                            <div class="icon">
+                                <i t-att-class="'fa ' + cat.icon"/>
+                            </div>
+                            <div class="info">
+                                <div class="title">
+                                    <t t-esc="cat.name"/>
+                                </div>
+                                <div class="value">
+                                    <t t-esc="cat.count"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="asset_chart_card">
+                <h4>Low Stock Alert</h4>
+                <div class="dashboard_table_scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Available Qty</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="data.low_stock_items"
+                            t-as="item"
+                            t-key="item.id">
+                                <tr>
+                                    <td>
+                                        <t t-esc="item.name"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="item.qty"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="item.unit"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="asset_chart_card">
+                <h4>Recent Transactions</h4>
+                <div class="dashboard_table_scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Unit</th>
+                                <th>Employee</th>
+                                <th>Division</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="data.recent_transactions"
+                            t-as="trx"
+                            t-key="trx.reference">
+                                <tr>
+                                    <td>
+                                        <t t-esc="trx.reference"/>
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="trx.item"/>
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="trx.qty"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="trx.unit"/>
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="trx.employee"/>
+                                    </td>
+
+                                    <td>
+                                        <t t-esc="trx.division"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</t>
+</templates>

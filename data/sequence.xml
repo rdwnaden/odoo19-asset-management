@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!-- Stock Receipt -->
+    <record id="seq_stock_receipt" model="ir.sequence">
+        <field name="name">Stock Receipt</field>
+        <field name="code">asset.stock.receipt</field>
+        <field name="prefix">STOCK/IN/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- Stock Issue -->
+    <record id="seq_stock_issue" model="ir.sequence">
+        <field name="name">Stock Issue</field>
+        <field name="code">asset.stock.issue</field>
+        <field name="prefix">STOCK/OUT/</field>
+        <field name="padding">4</field>
+    </record>
+
+</odoo>

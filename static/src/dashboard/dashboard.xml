@@ -1,0 +1,141 @@
+<templates xml:space="preserve">
+
+<t t-name="asset_management.AssetDashboard">
+
+
+<div class="o_asset_dashboard container-fluid mt-4">
+    <!-- <h1>Asset Management Dashboard</h1>
+    <br/>
+    <br/> -->
+    <h2>Asset Dashboard</h2>
+    <br/>
+    <!-- KPI CARDS -->
+    <div class="row g-3">
+        <!-- Total -->
+        <!-- <h4>Asset Status</h4> -->
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card total" t-on-click="() => this.openAssets()">
+                <div class="icon">
+                    📦
+                </div>
+                <div>
+                    <span>Total Asset</span>
+                    <h1>
+                        <t t-esc="data.total"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- In Use -->
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card in_use" t-on-click="() => this.openAssets('in_use')">
+                <div class="icon">
+                    💻
+                </div>
+                <div>
+                    <span>In Use</span>
+                    <h1>
+                        <t t-esc="data.in_use" />
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available -->
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card available" t-on-click="() => this.openAssets('available')">
+                <div class="icon">
+                    🟢
+                </div>
+                <div>
+                    <span>Available</span>
+                    <h1>
+                        <t t-esc="data.available"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Repair -->
+        <div class="col-xl-3 col-md-6">
+            <div class="asset_card repair" t-on-click="() => this.openAssets('repair')">
+                <div class="icon">
+                    🔧
+                </div>
+                <div>
+                    <span>Repair</span>
+                    <h1>
+                        <t t-esc="data.repair"/>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END KPI CARDS -->
+
+
+
+    <!-- TAMBAHAN BARU
+         Asset By Category
+    -->
+
+    <div class="row mt-4">
+        <!-- <div class="col-lg-6">
+            <div class="asset_chart_card">
+                <h4>
+                    Asset By Category
+                </h4>
+                <div class="chart_container">
+                    <canvas id="assetCategoryChart"/>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="asset_chart_card">
+            <h4>Asset By Category</h4>
+            <div class="row g-3">
+                <t t-foreach="data.categories"
+                t-as="cat"
+                t-key="cat.id">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="asset_card category"  t-on-click="() => this.openCategory(cat.id)">
+                            <div class="icon">
+                                 <i t-att-class="'fa ' + cat.icon"/>
+                            </div>
+                            <div class="info">
+                                <div class="title">
+                                    <t t-esc="cat.name"/>
+                                </div>
+                                <div class="value">
+                                    <t t-esc="cat.count"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+        
+    </div>
+    <!-- END Asset By Category -->
+
+    <!-- <div class="col-lg-5">
+    <div class="asset_chart_card">
+        <h4>Asset Status</h4>
+            <div class="chart_container">
+                <canvas id="assetStatusChart"/>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- TAMBAHAN BARU
+         ruang bawah agar bisa scroll
+    -->
+
+    <div style="height:80px;"></div>
+</div>
+<!-- END o_asset_dashboard -->
+</t>
+</templates>

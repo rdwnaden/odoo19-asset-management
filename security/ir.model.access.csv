@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_itsm_asset,itsm.asset,model_itsm_asset,,1,1,1,1
+access_itsm_employee,itsm.employee,model_itsm_employee,,1,1,1,1
+access_itsm_division,itsm.division,model_itsm_division,,1,1,1,1
+access_itsm_category,itsm.category,model_itsm_category,,1,1,1,1
+access_itsm_brands,itsm.brands,model_itsm_brands,,1,1,1,1
+access_itsm_location,itsm.location,model_itsm_location,,1,1,1,1
+
+access_asset_stock_item,asset.stock.item,model_asset_stock_item,base.group_user,1,1,1,1
+access_asset_stock_receipt,asset.stock.receipt,model_asset_stock_receipt,base.group_user,1,1,1,1
+access_asset_stock_receipt_line,asset.stock.receipt.line,model_asset_stock_receipt_line,base.group_user,1,1,1,1
+access_asset_stock_issue,asset.stock.issue,model_asset_stock_issue,base.group_user,1,1,1,1
+access_asset_stock_issue_line,asset.stock.issue.line,model_asset_stock_issue_line,base.group_user,1,1,1,1
+access_asset_stock_movement,asset.stock.movement,model_asset_stock_movement,base.group_user,1,1,0,0

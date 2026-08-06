@@ -1,0 +1,82 @@
+<odoo>
+
+
+    <!-- TREE -->
+
+    <record id="stock_receipt_tree" model="ir.ui.view">
+        <field name="name">asset.stock.receipt.tree</field>
+        <field name="model">asset.stock.receipt</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="supplier"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="stock_receipt_form" model="ir.ui.view">
+        <field name="name">asset.stock.receipt.form</field>
+        <field name="model">asset.stock.receipt</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_validate"
+                        string="Validate"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state == 'done'"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Reference Number"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="date" readonly="state == 'done'"/>
+                        <field name="supplier" readonly="state == 'done'"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Items">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="item_id" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="qty" width="150"/>
+                                    <field name="unit" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION -->
+    <record id="stock_receipt_action" model="ir.actions.act_window">
+        <field name="name">Stock In</field>
+        <field name="res_model">asset.stock.receipt</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+    id="stock_receipt_menu"
+    name="Stock In"
+    parent="stock_action"
+    action="stock_receipt_action"
+    sequence="20"/>
+
+</odoo>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Asset Form View -->
+    <record id="asset_view_form" model="ir.ui.view">
+        <field name="name">itsm.asset.view.form</field>
+        <field name="model">itsm.asset</field>
+        <field name="arch" type="xml">
+            <form string="Asset">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Asset Number"/>
+                        </h1>
+                    </div>
+
+                    <group name="device_information" string="DEVICE INFORMATION">
+                        <group>
+                            <field name="category_id"
+                                   options="{'no_open': True, 'no_create': True}"/>
+                            <field name="serial_number"/>
+                            <field name="brand_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="purchase_date"/>
+                        </group>
+                        <group>
+                            <field name="employee_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="division_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="location_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="specification" string="Specification">
+                            <group name="hardware_information" string="HARDWARE INFORMATION">
+                                <group>
+                                    <field name="ram"/>
+                                    <field name="storage_type" string="Storage"/>
+                                    <field name="storage_size"/>
+                                    <field name="specification" string="Details"/>
+                                </group>
+                                <group>
+                                    <field name="brand_id" options="{'no_open': True, 'no_create': True}"/>
+                                    <field name="activation_number"/>
+                                    <field name="system_model"/>
+                                </group>
+                            </group>
+                            <group name="software_accessories" string="SOFTWARE AND ACCESSORIES">
+                                <group>
+                                    <field name="antivirus"/>
+                                    <field name="antivirus_brand" invisible="not antivirus"/>
+                                </group>
+                                <group>
+                                    <field name="charger"/>
+                                    <field name="mouse"/>
+                                    <field name="keyboard"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>                         
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
+
+            </form>
+        </field>
+    </record>
+
+
+
+    <!-- Asset List View -->
+    <record id="asset_view_tree" model="ir.ui.view">
+        <field name="name">itsm.asset.view.list</field>
+        <field name="model">itsm.asset</field>
+        <field name="arch" type="xml">
+
+            <list>
+                <field name="name" width="150"/>
+                <field name="category_id"/>
+                <field name="ram" width="50"/>
+                <field name="storage_type" string="Storage"/>
+                <field name="storage_size"/>
+                <field name="specification" string="Details" width="150"/>
+                <field name="purchase_date" width="120"/>
+                <field name="serial_number" width="120"/>
+                <field name="employee_id" width="120"/>
+                <field name="division_id"/>
+                <field name="location_id"/>
+                <field name="state" width="70"/>
+                <field name="brand_id"/>
+                <field name="system_model" width="120" optional="hide"/>
+                <field name="antivirus" width="120" optional="hide"/>
+                <field name="antivirus_brand" invisible="not antivirus" width="120" optional="hide"/>
+                <field name="charger" width="120" optional="hide"/>
+                <field name="mouse" width="120" optional="hide"/>
+                <field name="keyboard" width="120" optional="hide"/>
+            </list>
+
+        </field>
+    </record>
+
+
+
+   <record id="asset_view_search" model="ir.ui.view">
+        <field name="name">itsm.asset.view.search</field>
+        <field name="model">itsm.asset</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="serial_number"/>
+                <field name="employee_id"/>
+                <field name="division_id"/>
+                <field name="location_id"/>
+                <field name="brand_id"/>
+            </search>
+        </field>
+    </record>
+
+
+
+    <!-- Action -->
+<record id="asset_action" model="ir.actions.act_window">
+    <field name="name">Asset List</field>
+    <field name="res_model">itsm.asset</field>
+    <field name="view_mode">list,form</field>
+    <field name="search_view_id" ref="asset_view_search"/>
+</record>
+
+
+<!-- Root Menu -->
+<menuitem id="menu_asset_root"
+          name="Asset Management"
+          web_icon="asset_management,static/description/icon.png"
+          sequence="10"/>
+
+
+<!-- Master Menu -->
+<menuitem id="menu_asset_master"
+          name="Asset"
+          parent="menu_asset_root"
+          sequence="20"/>
+
+
+<!-- Asset Menu -->
+<menuitem id="menu_asset_list"
+          name="Asset List"
+          parent="menu_asset_master"
+          action="asset_action"
+          sequence="30"/>
+
+
+</odoo>

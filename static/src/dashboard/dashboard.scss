@@ -1,0 +1,201 @@
+.o_asset_dashboard {
+    min-height: calc(100vh - 100px);
+    padding: 20px 20px 80px 20px;
+
+    .asset_card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-height: 130px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        transition: all 0.2s ease;
+        cursor: pointer;
+        transition: all .25s ease;
+
+        &:hover{
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,.15);
+        }
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+
+        // .icon {
+        //     width:65px;
+        //     height:65px;
+        //     border-radius:50%;
+        //     display:flex;
+        //     align-items:center;
+        //     justify-content:center;
+        //     i {
+        //         font-size:28px;
+        //     }
+        // }
+
+        .icon {
+            width:65px;
+            height:65px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            font-size:32px;
+        }
+        // khusus Font Awesome Category
+        &.category {
+            .icon {
+                i {
+                    font-size:28px;
+                }
+            }
+        }
+
+        .info {
+            .title {
+                font-size: 15px;
+                color: #6b7280;
+                margin-bottom: 5px;
+            }
+
+            .value {
+                font-size: 30px;
+                font-weight: 600;
+                color: #111827;
+                line-height: 1;
+            }
+        }
+    }
+
+    .total {
+        .icon {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+    }
+
+    .in_use {
+        .icon {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+    }
+
+    .available {
+        .icon {
+            background: #cffafe;
+            color: #0891b2;
+        }
+    }
+
+    .repair {
+        .icon {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+    }
+}
+
+/* ==========================
+   Chart Card
+   ========================== */
+.asset_chart_card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    h4 {
+        margin-bottom:20px;
+        font-weight:600;
+    }
+}
+
+.chart_container{
+    position: relative;
+    width:100%;
+    height:350px;
+}
+
+/* ==========================
+   Odoo 19 Scroll Fix
+   TAMBAHAN BARU
+   ========================== */
+.o_action_manager {
+    overflow-y: auto !important;
+}
+
+.o_action {
+    overflow: visible !important;
+}
+
+.o_content {
+    overflow: visible !important;
+}
+
+.category_card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    transition:.2s;
+    cursor:pointer;
+    height:140px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.category_card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+
+.category_icon{
+    font-size:28px;
+}
+
+.category_name{
+    margin-top:10px;
+    color:#6b7280;
+    font-size:15px;
+}
+
+.category_total{
+    font-size:34px;
+    font-weight:700;
+    margin-top:8px;
+}
+
+.category {
+    cursor: pointer;
+    &:hover{
+        border-color:#3b82f6;
+    }
+}
+
+.dashboard_table_scroll {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dashboard_table_scroll table {
+    margin-bottom:0;
+}
+
+
+.dashboard_table_scroll thead th {
+    position: sticky;
+    top:0;
+    background:white;
+    z-index:2;
+}
