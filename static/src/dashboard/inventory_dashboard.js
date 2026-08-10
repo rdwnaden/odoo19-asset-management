@@ -60,14 +60,13 @@ export class InventoryDashboard extends Component {
 
         if (filter === "low_stock") {
             domain = [
-                ["qty_available", "<=", 5],
-                ["qty_available", ">", 0],
+                ["stock_status", "=", "low"],
             ];
         }
 
         if (filter === "out_stock") {
             domain = [
-                ["qty_available", "=", 0],
+                ["stock_status", "=", "empty"],
             ];
         }
 

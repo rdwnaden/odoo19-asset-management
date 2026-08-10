@@ -9,18 +9,19 @@ class StockDashboard(models.AbstractModel):
     @api.model
     def get_dashboard_data(self):
         Item = self.env["asset.stock.item"]
-        total_item = Item.search_count([])
-        total_stock = sum(
-            Item.search([]).mapped("qty_available")
-        )
 
+        total_item = Item.search_count([])
+
+        items = Item.search([])
+        total_stock = sum(items.mapped("qty_available"))
+
+        # Low Stock berdasarkan status
         low_stock = Item.search_count([
-            ("qty_available", "<=", 5),
-            ("qty_available", ">", 0),
+            ("stock_status", "=", "low"),
         ])
 
         out_stock = Item.search_count([
-            ("qty_available", "=", 0),
+            ("stock_status", "=", "empty"),
         ])
 
         return {
@@ -29,7 +30,6 @@ class StockDashboard(models.AbstractModel):
             "low_stock": low_stock,
             "out_stock": out_stock,
         }
-
     @api.model
     def get_category_data(self):
         Item = self.env["asset.stock.item"]
@@ -57,10 +57,12 @@ class StockDashboard(models.AbstractModel):
     def get_low_stock(self):
         items = self.env["asset.stock.item"].search(
             [
-                ("qty_available", "<=", 5),
+                ("stock_status", "=", "low"),
             ],
-            limit=10
+            order="qty_available asc",
+            limit=10,
         )
+
         result = []
 
         for item in items:

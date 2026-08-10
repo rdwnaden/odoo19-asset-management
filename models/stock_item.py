@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api, _
 
 
 class AssetStockItem(models.Model):
@@ -31,18 +31,19 @@ class AssetStockItem(models.Model):
             ('empty', 'Out of Stock'),
 
         ],
-        compute="_compute_stock_status",string="Status")
+        compute="_compute_stock_status",string="Status", store=True)
 
     movement_ids = fields.One2many("asset.stock.movement","item_id",string="Movement History")
 
 
+    @api.depends("qty_available", "minimum_stock")
     def _compute_stock_status(self):
-
         for record in self:
+
             if record.qty_available <= 0:
                 record.stock_status = "empty"
 
-            elif record.qty_available <= record.minimum_stock:
+            elif record.qty_available < record.minimum_stock:
                 record.stock_status = "low"
 
             else:

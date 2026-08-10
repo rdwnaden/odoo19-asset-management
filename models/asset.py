@@ -30,6 +30,8 @@ class Asset(models.Model):
         ('12gb', '12GB'),
         ('16gb', '16GB'),
         ('24gb', '24GB'),
+        ('32gb', '32GB'),
+        ('64gb', '64GB'),
     ], string='RAM', tracking=True)
     storage_type = fields.Selection([
             ('ssd', 'SSD'),
