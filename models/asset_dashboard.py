@@ -70,37 +70,36 @@ class AssetDashboard(models.AbstractModel):
     @api.model
     def get_asset_category_data(self):
         Asset = self.env["itsm.asset"]
-        Category = self.env["itsm.category"]
 
         result = []
 
-        categories = Category.search([])
+        assets = Asset.search([])
+
+        categories = assets.mapped("category_id")
 
         for category in categories:
 
-            assets = Asset.search([
-                ("category_id", "=", category.id)
-            ])
+            category_assets = assets.filtered(
+                lambda asset: asset.category_id.id == category.id
+            )
 
-            total = len(assets)
-
-            in_use = len(assets.filtered(
-                lambda a: a.state == "in_use"
+            in_use = len(category_assets.filtered(
+                lambda asset: asset.state == "in_use"
             ))
 
-            available = len(assets.filtered(
-                lambda a: a.state == "available"
+            available = len(category_assets.filtered(
+                lambda asset: asset.state == "available"
             ))
 
-            repair = len(assets.filtered(
-                lambda a: a.state == "repair"
+            repair = len(category_assets.filtered(
+                lambda asset: asset.state == "repair"
             ))
 
             result.append({
                 "id": category.id,
                 "name": category.name,
-                "icon": category.icon,
-                "count": total,
+                "icon": category.icon or "fa-cube",
+                "count": len(category_assets),
                 "in_use": in_use,
                 "available": available,
                 "repair": repair,
