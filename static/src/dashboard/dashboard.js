@@ -47,14 +47,13 @@ export class AssetDashboard extends Component {
 
             // this.data.category_labels = category.labels;
             // this.data.category_values = category.values;
-
             const category = await this.orm.call(
                 "asset.dashboard",
                 "get_asset_category_data",
                 []
             );
 
-            this.data.categories = category.categories;
+            this.data.categories = category;
 
         });
 

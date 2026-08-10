@@ -107,8 +107,32 @@
                                 <div class="title">
                                     <t t-esc="cat.name"/>
                                 </div>
+
                                 <div class="value">
                                     <t t-esc="cat.count"/>
+                                </div>
+                                <br/>
+                                <div class="category_status">
+                                    <span>
+                                        In Use:
+                                        <strong>
+                                            <t t-esc="cat.in_use"/>
+                                        </strong>
+                                    </span>
+
+                                    <span>
+                                        Available:
+                                        <strong>
+                                            <t t-esc="cat.available"/>
+                                        </strong>
+                                    </span>
+
+                                    <span>
+                                        Repair:
+                                        <strong>
+                                            <t t-esc="cat.repair"/>
+                                        </strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>

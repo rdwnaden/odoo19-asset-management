@@ -42,27 +42,68 @@ class AssetDashboard(models.AbstractModel):
     #         "values": list(categories.values()),
     #     }
 
+    # @api.model
+    # def get_asset_category_data(self):
+    #     result = self.env["itsm.asset"].read_group(
+    #         [],
+    #         ["category_id"],
+    #         ["category_id"]
+    #     )
+    #     categories = []
+    #     for r in result:
+    #         category = self.env["itsm.category"].browse(
+    #             r["category_id"][0]
+    #         )
+
+    #         categories.append({
+    #             "id": category.id,
+    #             "name": category.name,
+    #             "icon": category.icon or "fa-cube",
+    #             "count": r["category_id_count"],
+    #         })
+    #         _logger.info("CATEGORY DASHBOARD %s", categories)
+
+    #     return {
+    #         "categories": categories
+    #     }
+
     @api.model
     def get_asset_category_data(self):
-        result = self.env["itsm.asset"].read_group(
-            [],
-            ["category_id"],
-            ["category_id"]
-        )
-        categories = []
-        for r in result:
-            category = self.env["itsm.category"].browse(
-                r["category_id"][0]
-            )
+        Asset = self.env["itsm.asset"]
+        Category = self.env["itsm.category"]
 
-            categories.append({
+        result = []
+
+        categories = Category.search([])
+
+        for category in categories:
+
+            assets = Asset.search([
+                ("category_id", "=", category.id)
+            ])
+
+            total = len(assets)
+
+            in_use = len(assets.filtered(
+                lambda a: a.state == "in_use"
+            ))
+
+            available = len(assets.filtered(
+                lambda a: a.state == "available"
+            ))
+
+            repair = len(assets.filtered(
+                lambda a: a.state == "repair"
+            ))
+
+            result.append({
                 "id": category.id,
                 "name": category.name,
-                "icon": category.icon or "fa-cube",
-                "count": r["category_id_count"],
+                "icon": category.icon,
+                "count": total,
+                "in_use": in_use,
+                "available": available,
+                "repair": repair,
             })
-            _logger.info("CATEGORY DASHBOARD %s", categories)
 
-        return {
-            "categories": categories
-        }
+        return result

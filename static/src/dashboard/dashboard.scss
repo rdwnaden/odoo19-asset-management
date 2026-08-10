@@ -199,3 +199,21 @@
     background:white;
     z-index:2;
 }
+
+.category_status {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    font-size: 15px;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.category_status span {
+    display: inline-block;
+}
+
+.category_status strong {
+    font-weight: 600;
+    color: #495057;
+}
