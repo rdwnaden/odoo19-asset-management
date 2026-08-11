@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Neuropolitical Rg';
+    src: url('/forecastle2023/static/src/fonts/Neuropolitical-Rg.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.neuropolitical-title {
+    font-family: 'Neuropolitical Rg', sans-serif !important;
+    font-weight: normal !important;
+}

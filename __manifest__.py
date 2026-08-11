@@ -52,6 +52,10 @@ Long description of module's purpose
         # "asset_management/static/src/dashboard/inventory_dashboard.scss",
         "asset_management/static/src/dashboard/inventory_dashboard.xml",
         ],
+
+    'web.assets_frontend': [
+        'asset_management/static/src/css/website.css',
+        ],
     },
 }
 
