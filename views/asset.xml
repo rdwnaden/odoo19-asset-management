@@ -95,6 +95,7 @@
                 <field name="location_id"/>
                 <field name="state" width="70"/>
                 <field name="brand_id"/>
+                <field name="notes"/>
                 <field name="system_model" width="120" optional="hide"/>
                 <field name="antivirus" width="120" optional="hide"/>
                 <field name="antivirus_brand" invisible="not antivirus" width="120" optional="hide"/>
