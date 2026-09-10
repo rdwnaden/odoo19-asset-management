@@ -21,6 +21,7 @@ class AssetDashboard(models.AbstractModel):
             "in_use": Asset.search_count([("state", "=", "in_use")]),
             "available": Asset.search_count([("state", "=", "available")]),
             "repair": Asset.search_count([("state", "=", "repair")]),
+            "borrowed": Asset.search_count([("state", "=", "borrowed")]),
         }
 
 
@@ -95,6 +96,10 @@ class AssetDashboard(models.AbstractModel):
                 lambda asset: asset.state == "repair"
             ))
 
+            borrowed = len(category_assets.filtered(
+                            lambda asset: asset.state == "borrowed"
+            ))
+
             result.append({
                 "id": category.id,
                 "name": category.name,
@@ -103,6 +108,7 @@ class AssetDashboard(models.AbstractModel):
                 "in_use": in_use,
                 "available": available,
                 "repair": repair,
+                "borrowed": borrowed,
             })
 
         return result

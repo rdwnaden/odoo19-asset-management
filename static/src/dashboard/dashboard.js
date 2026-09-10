@@ -17,6 +17,7 @@ export class AssetDashboard extends Component {
             in_use: 0,
             available: 0,
             repair: 0,
+            borrowed: 0,
 
             // Asset By Category
             // category_labels: [],
@@ -154,16 +155,19 @@ export class AssetDashboard extends Component {
                     "In Use",
                     "Available",
                     "Repair",
+                    "Borrowed",
                 ],
                 datasets: [{
                     data: [
                         this.data.in_use,
                         this.data.available,
                         this.data.repair,
+                        this.data.borrowed,
                     ],
                     backgroundColor: [
                         "#22C55E",
                         "#3B82F6",
+                        "#F97316",
                         "#F97316",
                     ],
                     borderWidth: 0,

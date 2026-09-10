@@ -128,11 +128,19 @@
                                     </span>
 
                                     <span>
+                                        Borrowed:
+                                        <strong>
+                                            <t t-esc="cat.borrowed"/>
+                                        </strong>
+                                    </span>
+
+                                    <span>
                                         Repair:
                                         <strong>
                                             <t t-esc="cat.repair"/>
                                         </strong>
                                     </span>
+
                                 </div>
                             </div>
                         </div>
