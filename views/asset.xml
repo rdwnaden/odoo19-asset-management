@@ -49,6 +49,10 @@
                                 <group>
                                     <field name="antivirus"/>
                                     <field name="antivirus_brand" invisible="not antivirus"/>
+                                    <field name="is_pc" invisible="1"/>
+                                    <field name="is_ups" invisible="1"/>
+                                    <field name="has_ups" invisible="not is_pc"/>
+                                    <field name="ups_asset_id" invisible="not is_pc or not has_ups" required="has_ups" domain="[('category_id.name', '=', 'UPS')]" options="{'no_create': True}"/>
                                 </group>
                                 <group>
                                     <field name="charger"/>
@@ -59,6 +63,17 @@
                         </page>
                         <page name="notes" string="Notes">
                             <field name="notes"/>                         
+                        </page>
+                        <page string="Used By PC" invisible="not is_ups">
+                            <field name="pc_asset_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="employee_id"/>
+                                    <field name="division_id"/>
+                                    <field name="location_id"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

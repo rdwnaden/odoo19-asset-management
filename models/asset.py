@@ -58,6 +58,48 @@ class Asset(models.Model):
     #credential_ids = fields.One2many('itsm.credential', 'asset_id', string='Credentials', readonly=True)
     #used_id = fields.Many2one(string='Used By', related='assign_ids.new_employee_id', readonly=True)
     #location_id = fields.Many2one(string='Location', related='assign_ids.new_location_id', store=True, readonly=True)
+
+    has_ups = fields.Boolean(string="UPS", default=False, tracking=True)
+    ups_asset_id = fields.Many2one("itsm.asset", string="UPS Number", tracking=True, domain="[('category_id.name', '=', 'UPS'),('pc_asset_ids', '=', False)]")
+    pc_asset_ids = fields.One2many("itsm.asset", "ups_asset_id", string="Used By PC", readonly=True)
+    is_pc = fields.Boolean(string="Is PC", compute="_compute_is_pc")
+    is_ups = fields.Boolean(string="Is UPS", compute="_compute_is_ups")
+
+    @api.depends("category_id")
+    def _compute_is_pc(self):
+        for record in self:
+            record.is_pc = record.category_id.name == "PC"
+
+    @api.depends("category_id")
+    def _compute_is_ups(self):
+        for record in self:
+            record.is_ups = record.category_id.name == "UPS"
+
+    @api.onchange("category_id")
+    def _onchange_category_id(self):
+        if self.category_id.name != "PC":
+            self.has_ups = False
+            self.ups_asset_id = False
+
+    @api.constrains("ups_asset_id")
+    def _check_ups_assignment(self):
+        for record in self:
+            if record.ups_asset_id:
+                other_pcs = self.search([
+                    ("ups_asset_id", "=", record.ups_asset_id.id),
+                    ("id", "!=", record.id),
+                ])
+
+                if other_pcs:
+                    raise ValidationError(
+                        "UPS %s sudah digunakan oleh PC %s."
+                        % (
+                            record.ups_asset_id.name,
+                            ", ".join(other_pcs.mapped("name")),
+                        )
+                    )
+
+    
     
     def copy(self, default=None):
         default = dict(default or {})
