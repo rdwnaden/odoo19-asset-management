@@ -112,3 +112,61 @@ class AssetDashboard(models.AbstractModel):
             })
 
         return result
+
+
+    @api.model
+    def get_antivirus_license_data(self):
+        License = self.env["itsm.lisence"]
+        licenses = License.search([
+            ("category_id.name", "=", "Antivirus"),
+            ("active", "=", True),
+        ], order="name")
+
+        result = []
+
+        for license in licenses:
+
+            result.append({
+                "id": license.id,
+                "name": license.name,
+                "stock": license.stock,
+                "assigned": license.assigned_count,
+                "available": license.available_stock,
+                "expired_date": (
+                    license.expired_date.strftime("%d/%m/%Y")
+                    if license.expired_date
+                    else "-"
+                ),
+                "link": license.link or "",
+            })
+        return result
+
+
+    @api.model
+    def get_antivirus_license_data(self):
+
+        License = self.env["itsm.lisence"]
+
+        licenses = License.search([
+            ("category_id.name", "=", "Antivirus"),
+            ("active", "=", True),
+        ], order="name")
+
+        result = []
+
+        for license in licenses:
+
+            result.append({
+                "id": license.id,
+                "name": license.name,
+                "stock": license.stock,
+                "assigned": license.assigned_count,
+                "available": license.available_stock,
+                "expired_date": (
+                    license.expired_date.strftime("%d/%m/%Y")
+                    if license.expired_date
+                    else "-"
+                ),
+            })
+
+        return result

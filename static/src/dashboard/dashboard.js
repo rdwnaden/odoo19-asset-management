@@ -56,6 +56,15 @@ export class AssetDashboard extends Component {
 
             this.data.categories = category;
 
+
+            const antivirusLicenses = await this.orm.call(
+                "asset.dashboard",
+                "get_antivirus_license_data",
+                []
+            );
+
+            this.data.antivirus_licenses = antivirusLicenses;
+
         });
 
         // onMounted(() => {
@@ -225,6 +234,20 @@ export class AssetDashboard extends Component {
 
             view_mode: "list,form",
             domain: [["category_id", "=", categoryId]],
+            target: "current",
+        });
+    }
+
+    openAntivirusLicense(licenseId) {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "Antivirus License",
+            res_model: "itsm.lisence",
+            views: [
+                [false, "form"],
+            ],
+            view_mode: "form",
+            res_id: licenseId,
             target: "current",
         });
     }

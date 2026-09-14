@@ -152,6 +152,62 @@
     </div>
     <!-- END Asset By Category -->
 
+    <div class="row mt-4">
+        <div class="asset_chart_card">
+
+            <h4>Antivirus License</h4>
+
+            <div class="row g-3">
+
+                <t t-foreach="data.antivirus_licenses"
+                t-as="license"
+                t-key="license.id">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="asset_card antivirus_license"  t-on-click="() => this.openAntivirusLicense(license.id)">
+                            <div class="icon">
+                                🛡️
+                            </div>
+                            <div class="info">
+                                <div class="title">
+                                    <t t-esc="license.name"/>
+                                </div>
+                                <div class="license_stats">
+                                    <span>
+                                        Stock:
+                                        <strong>
+                                            <t t-esc="license.stock"/>
+                                        </strong>
+                                    </span>
+                                    <span>
+                                        Assigned:
+                                        <strong>
+                                            <t t-esc="license.assigned"/>
+                                        </strong>
+                                    </span>
+                                    <span>
+                                        Available:
+                                        <strong>
+                                            <t t-esc="license.available"/>
+                                        </strong>
+                                    </span>
+                                </div>
+                                <div class="license_expired">
+
+                                    <span>
+                                        Expired:
+                                        <strong>
+                                            <t t-esc="license.expired_date"/>
+                                        </strong>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </div>
+
     <!-- <div class="col-lg-5">
     <div class="asset_chart_card">
         <h4>Asset Status</h4>
