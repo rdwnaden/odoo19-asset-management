@@ -49,7 +49,7 @@
                                 <group>
                                     <field name="antivirus"/>
                                     <field name="antivirus_brand" invisible="1"/>
-                                    <field name="antivirus_license_id" required="antivirus" invisible="not antivirus" domain="[('category_id.name', '=', 'Antivirus'), ('available_stock', '>', 0)]"/>
+                                    <field name="antivirus_license_id" required="antivirus" invisible="not antivirus" domain="[('category_id.name', '=', 'Antivirus'), ('available_stock', '>', 0)]" options="{'no_open': True, 'no_create': True}"/>
                                     <field name="is_pc" invisible="1"/>
                                     <field name="is_ups" invisible="1"/>
                                     <field name="has_ups" invisible="not is_pc"/>
