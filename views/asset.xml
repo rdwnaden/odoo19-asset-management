@@ -49,6 +49,7 @@
                                 <group>
                                     <field name="antivirus"/>
                                     <field name="antivirus_brand" invisible="not antivirus"/>
+                                    <field name="antivirus_license_id" required="antivirus" domain="[('category_id.name', '=', 'Antivirus'), ('available_stock', '>', 0)]"/>
                                     <field name="is_pc" invisible="1"/>
                                     <field name="is_ups" invisible="1"/>
                                     <field name="has_ups" invisible="not is_pc"/>
@@ -159,7 +160,7 @@
 
 <!-- Master Menu -->
 <menuitem id="menu_asset_master"
-          name="Asset"
+          name="Data"
           parent="menu_asset_root"
           sequence="20"/>
 

@@ -65,6 +65,47 @@ class Asset(models.Model):
     is_pc = fields.Boolean(string="Is PC", compute="_compute_is_pc")
     is_ups = fields.Boolean(string="Is UPS", compute="_compute_is_ups")
 
+    lisence_id = fields.Many2one("itsm.lisence", string="License", tracking=True)
+    antivirus_license_id = fields.Many2one("itsm.lisence", string="Antivirus Software", tracking=True, domain="[('category_id.name', '=', 'Antivirus'), ('available_stock', '>', 0)]",)
+
+    @api.onchange("antivirus")
+    def _onchange_antivirus(self):
+        if not self.antivirus:
+            self.antivirus_license_id = False
+
+    @api.constrains("antivirus", "antivirus_license_id")
+    def _check_antivirus_license_stock(self):
+        for record in self:
+
+            if not record.antivirus and record.antivirus_license_id:
+                raise ValidationError(
+                    "Antivirus Software harus dikosongkan "
+                    "jika Antivirus tidak dicentang."
+                )
+
+            if record.antivirus and record.antivirus_license_id:
+
+                license_record = record.antivirus_license_id
+
+                assigned_count = self.search_count([
+                    ("antivirus_license_id", "=", license_record.id),
+                    ("id", "!=", record.id),
+                ])
+
+                if assigned_count >= license_record.stock:
+                    raise ValidationError(
+                        "License '%s' sudah mencapai batas stock.\n\n"
+                        "Stock      : %s\n"
+                        "Assigned   : %s\n"
+                        "Available  : 0\n\n"
+                        "Tidak dapat assign license ini ke asset lain."
+                        % (
+                            license_record.name,
+                            license_record.stock,
+                            assigned_count,
+                        )
+                    )
+
     @api.depends("category_id")
     def _compute_is_pc(self):
         for record in self:

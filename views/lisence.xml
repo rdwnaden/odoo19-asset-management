@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="itsm_lisence_view_form" model="ir.ui.view">
+        <field name="name">itsm.lisence.view.form</field>
+        <field name="model">itsm.lisence</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group name="information" string="INFORMATION">
+                            <field name="name"/>
+                            <field name="category_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="description"/>
+                                <label for="expired_date" string="Expired Date"/>
+
+                                <div class="d-flex align-items-center">
+                                    <field name="expired_date" nolabel="1"/>
+
+                                    <span
+                                        class="ms-2 text-muted"
+                                        invisible="not expired_date"
+                                    >
+                                        <field
+                                            name="days_remaining"
+                                            nolabel="1"
+                                            readonly="1"
+                                            class="oe_inline"
+                                        />
+                                        days remaining
+                                    </span>
+                                </div>
+                        </group>
+                        <group name="stock_details" string="STOCK DETAILS">
+                            <field name="stock"/>
+                            <field name="assigned_count"/>
+                            <field name="available_stock"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group name="credential" string="CREDENTIAL">
+                            <field name="link"/>
+                            <field name="credential_username"/>
+                            <field name="credential_password" widget="password_toggle"/>
+                        </group>
+                        <group name="" string="">
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Used By">
+                            <field name="asset_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="category_id"/>
+                                    <field name="employee_id"/>
+                                    <field name="division_id"/>
+                                    <field name="location_id"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <record id="itsm_lisence_view_tree" model="ir.ui.view">
+        <field name="name">itsm.lisence.view.tree</field>
+        <field name="model">itsm.lisence</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="description"/>
+                <field name="stock"/>
+                <field name="assigned_count"/>
+                <field name="available_stock"/>
+                <field name="expired_date"/>
+                <field name="link"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="lisence_action" model="ir.actions.act_window">
+        <field name="name">Software and License</field>
+        <field name="res_model">itsm.lisence</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Asset Menu -->
+    <menuitem id="menu_asset_lisence"
+            name="Software and License"
+            parent="menu_asset_master"
+            action="lisence_action"
+            sequence="40"/>
+
+</odoo>

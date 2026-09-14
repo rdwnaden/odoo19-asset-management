@@ -11,3 +11,5 @@ from . import stock_receipt
 from . import stock_issue
 from . import stock_movement
 from . import stock_dashboard
+
+from . import lisence

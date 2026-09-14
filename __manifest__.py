@@ -1,7 +1,7 @@
 {
     'name': "asset_management",
 
-    'summary': "Short (1 phrase/line) summary of the module's purpose",
+    'summary': "IT Service & Asset Management Module",
 
     'description': """
 Long description of module's purpose
@@ -36,6 +36,8 @@ Long description of module's purpose
         'views/stock_receipt.xml',
         'views/stock_issue.xml',
         'views/templates.xml',
+
+        'views/lisence.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -49,8 +51,11 @@ Long description of module's purpose
         'asset_management/static/lib/Chart/chart.umd.js',
 
         "asset_management/static/src/dashboard/inventory_dashboard.js",
-        # "asset_management/static/src/dashboard/inventory_dashboard.scss",
         "asset_management/static/src/dashboard/inventory_dashboard.xml",
+
+        'asset_management/static/src/js/password_toggle.js',
+        'asset_management/static/src/xml/password_toggle.xml',
+        'asset_management/static/src/css/password_toggle.css',
         ],
 
     'web.assets_frontend': [
