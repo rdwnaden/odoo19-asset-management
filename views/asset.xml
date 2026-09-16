@@ -8,12 +8,21 @@
         <field name="arch" type="xml">
             <form string="Asset">
                 <sheet>
-                    <div class="oe_title">
-                        <label for="name"/>
-                        <h1>
-                            <field name="name" placeholder="Asset Number"/>
-                        </h1>
-                    </div>
+                    <group> 
+                        <group>
+                            <div class="oe_title">
+                                <label for="name"/>
+                                <h1>
+                                    <field name="name" placeholder="Asset Number"/>
+                                </h1>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="asset_image"
+                                widget="image"
+                                options="{'preview_image': 'asset_image','size': [300, 300]}"/>
+                        </group>
+                    </group>
 
                     <group name="device_information" string="DEVICE INFORMATION">
                         <group>
@@ -136,6 +145,7 @@
                 <field name="division_id"/>
                 <field name="location_id"/>
                 <field name="brand_id"/>
+                <field name="specification" string="Details"/>
             </search>
         </field>
     </record>

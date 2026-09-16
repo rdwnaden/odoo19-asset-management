@@ -67,6 +67,7 @@ class Asset(models.Model):
 
     lisence_id = fields.Many2one("itsm.lisence", string="License", tracking=True)
     antivirus_license_id = fields.Many2one("itsm.lisence", string="Antivirus Software", tracking=True, domain="[('category_id.name', '=', 'Antivirus'), ('available_stock', '>', 0)]",)
+    asset_image = fields.Image(string="Picture", max_width=1280, max_height=1280, tracking=False)
 
     @api.onchange("antivirus")
     def _onchange_antivirus(self):
