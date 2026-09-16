@@ -4,6 +4,7 @@
 
     .asset_card {
         background: #ffffff;
+        min-width: 0;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 20px;
@@ -45,7 +46,7 @@
             display:flex;
             align-items:center;
             justify-content:center;
-
+            flex-shrink: 0;
             font-size:32px;
         }
         // khusus Font Awesome Category
@@ -58,10 +59,15 @@
         }
 
         .info {
+            min-width: 0;
+            max-width: 100%;
+            flex: 1 1 auto;
+
             .title {
                 font-size: 15px;
                 color: #6b7280;
                 margin-bottom: 5px;
+                overflow-wrap: anywhere;
             }
 
             .value {
@@ -209,20 +215,26 @@
 
 .category_status {
     display: flex;
-    gap: 10px;
-    margin-top: 4px;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin-top: 8px;
     font-size: 13px;
     color: #6c757d;
-    white-space: nowrap;
+    width: 100%;
+    max-width: 100%;
+    line-height: 1.5;
 }
 
 .category_status span {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .category_status strong {
     font-weight: 600;
     color: #495057;
+    margin-left: 3px;
 }
 
 
