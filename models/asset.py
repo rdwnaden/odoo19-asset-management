@@ -219,8 +219,8 @@ class Asset(models.Model):
         # ==========================================================
 
         # Label 1
-        worksheet.set_column('A:A', 3.5)
-        worksheet.set_column('B:B', 2)
+        worksheet.set_column('A:A', 3)
+        worksheet.set_column('B:B', 3)
         worksheet.set_column('C:C', 3)
         worksheet.set_column('D:D', 3)
         worksheet.set_column('E:E', 3)
@@ -230,8 +230,8 @@ class Asset(models.Model):
         worksheet.set_column('G:G', 2)
 
         # Label 2
-        worksheet.set_column('H:H', 3.5)
-        worksheet.set_column('I:I', 2)
+        worksheet.set_column('H:H', 3)
+        worksheet.set_column('I:I', 3)
         worksheet.set_column('J:J', 3)
         worksheet.set_column('K:K', 3)
         worksheet.set_column('L:L', 3)
@@ -241,8 +241,8 @@ class Asset(models.Model):
         worksheet.set_column('N:N', 2)
 
         # Label 3
-        worksheet.set_column('O:O', 3.5)
-        worksheet.set_column('P:P', 2)
+        worksheet.set_column('O:O', 3)
+        worksheet.set_column('P:P', 3)
         worksheet.set_column('Q:Q', 3)
         worksheet.set_column('R:R', 3)
         worksheet.set_column('S:S', 3)
@@ -270,7 +270,7 @@ class Asset(models.Model):
 
         title_format = workbook.add_format({
             'bold': True,
-            'font_size': 8,
+            'font_size': 7,
             'align': 'center',
             'valign': 'vcenter',
             'text_wrap': True,
@@ -280,7 +280,7 @@ class Asset(models.Model):
 
         asset_number_format = workbook.add_format({
             'bold': True,
-            'font_size': 6,
+            'font_size': 5,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -289,7 +289,7 @@ class Asset(models.Model):
 
         month_format = workbook.add_format({
             'bold': True,
-            'font_size': 6,
+            'font_size': 5,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -298,7 +298,7 @@ class Asset(models.Model):
 
         year_format = workbook.add_format({
             'bold': True,
-            'font_size': 6,
+            'font_size': 5,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -307,14 +307,14 @@ class Asset(models.Model):
 
         company_format = workbook.add_format({
             'bold': True,
-            'font_size': 8,
+            'font_size': 7,
             'align': 'center',
             'valign': 'vcenter',
         })
 
         company_border_format = workbook.add_format({
             'bold': True,
-            'font_size': 8,
+            'font_size': 7,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -368,9 +368,9 @@ class Asset(models.Model):
             # ROW HEIGHT
             # ======================================================
 
-            worksheet.set_row(row_1, 15)
-            worksheet.set_row(row_2, 15)
-            worksheet.set_row(row_3, 15)
+            worksheet.set_row(row_1, 10)
+            worksheet.set_row(row_2, 10)
+            worksheet.set_row(row_3, 10)
             worksheet.set_row(row_4, 18)
 
             # ======================================================
@@ -422,11 +422,11 @@ class Asset(models.Model):
                     {
                         'image_data': logo_image,
 
-                        'x_scale': 0.05,
-                        'y_scale': 0.05,
+                        'x_scale': 0.04,
+                        'y_scale': 0.04,
 
-                        'x_offset': 2,
-                        'y_offset': 5,
+                        'x_offset': 3,
+                        'y_offset': 4,
 
                         'object_position': 1,
                     }
