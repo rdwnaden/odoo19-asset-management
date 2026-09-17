@@ -330,8 +330,8 @@ class Asset(models.Model):
 
         for index, asset in enumerate(self):
 
-            page_index = index // 15
-            position = index % 15
+            page_index = index // 45
+            position = index % 45
 
             label_row = position // 3
             label_col = position % 3
@@ -355,7 +355,7 @@ class Asset(models.Model):
             # ------------------------------------------------------
 
             start_row = (
-                page_index * 22
+                page_index * 62
                 + label_row * 4
             )
 
@@ -520,9 +520,9 @@ class Asset(models.Model):
         # PRINT AREA
         # ==========================================================
 
-        total_pages = (len(self) + 14) // 15
+        total_pages = (len(self) + 44) // 45
 
-        total_rows = total_pages * 22
+        total_rows = total_pages * 62
 
         worksheet.print_area(
             0,
@@ -538,7 +538,7 @@ class Asset(models.Model):
         page_breaks = []
 
         for page in range(1, total_pages):
-            page_breaks.append(page * 22)
+            page_breaks.append(page * 62)
 
         if page_breaks:
             worksheet.set_h_pagebreaks(page_breaks)
