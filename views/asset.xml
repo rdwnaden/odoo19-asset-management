@@ -114,14 +114,14 @@
                 <field name="storage_size"/>
                 <field name="specification" string="Details" width="150"/>
                 <field name="purchase_date" width="120"/>
-                <field name="serial_number" width="120"/>
+                <field name="serial_number" width="150"/>
+                <field name="brand_id"/>
+                <field name="system_model" width="120"/>
                 <field name="employee_id" width="120"/>
                 <field name="division_id"/>
                 <field name="location_id"/>
                 <field name="state" width="70"/>
-                <field name="brand_id"/>
                 <field name="notes"/>
-                <field name="system_model" width="120" optional="hide"/>
                 <field name="antivirus" width="120" optional="hide"/>
                 <field name="antivirus_brand" invisible="not antivirus" width="120" optional="hide"/>
                 <field name="charger" width="120" optional="hide"/>
