@@ -114,7 +114,7 @@
                 <field name="storage_size"/>
                 <field name="specification" string="Details" width="150"/>
                 <field name="purchase_date" width="120"/>
-                <field name="serial_number" width="150"/>
+                <field name="serial_number" width="180"/>
                 <field name="brand_id"/>
                 <field name="system_model" width="120"/>
                 <field name="employee_id" width="120"/>
