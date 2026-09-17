@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+import io
+import base64
+import xlsxwriter
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -165,3 +167,431 @@ class Asset(models.Model):
 
             if duplicate:
                 raise ValidationError("Asset Number already exists!")
+
+
+    def action_generate_asset_label(self):
+        if not self:
+            return False
+
+        # ==========================================================
+        # CREATE EXCEL IN MEMORY
+        # ==========================================================
+
+        output = io.BytesIO()
+
+        workbook = xlsxwriter.Workbook(
+            output,
+            {
+                'in_memory': True,
+            }
+        )
+
+        worksheet = workbook.add_worksheet(
+            'Asset Labels'
+        )
+
+        # ==========================================================
+        # PAGE SETUP
+        # ==========================================================
+
+        worksheet.set_landscape()
+        worksheet.set_paper(9)  # A4
+
+        worksheet.fit_to_pages(1, 0)
+
+        worksheet.set_margins(
+            left=0.20,
+            right=0.20,
+            top=0.25,
+            bottom=0.25,
+        )
+
+        worksheet.center_horizontally()
+
+        # ==========================================================
+        # COLUMN WIDTH
+        #
+        # LABEL 1 : A:F
+        # GAP     : G
+        # LABEL 2 : H:M
+        # GAP     : N
+        # LABEL 3 : O:T
+        # ==========================================================
+
+        # Label 1
+        worksheet.set_column('A:A', 6)
+        worksheet.set_column('B:B', 4)
+        worksheet.set_column('C:C', 6)
+        worksheet.set_column('D:D', 6)
+        worksheet.set_column('E:E', 6)
+        worksheet.set_column('F:F', 6)
+
+        # Gap
+        worksheet.set_column('G:G', 2)
+
+        # Label 2
+        worksheet.set_column('H:H', 6)
+        worksheet.set_column('I:I', 4)
+        worksheet.set_column('J:J', 6)
+        worksheet.set_column('K:K', 6)
+        worksheet.set_column('L:L', 6)
+        worksheet.set_column('M:M', 6)
+
+        # Gap
+        worksheet.set_column('N:N', 2)
+
+        # Label 3
+        worksheet.set_column('O:O', 6)
+        worksheet.set_column('P:P', 4)
+        worksheet.set_column('Q:Q', 6)
+        worksheet.set_column('R:R', 6)
+        worksheet.set_column('S:S', 6)
+        worksheet.set_column('T:T', 6)
+
+        # ==========================================================
+        # FORMAT
+        # ==========================================================
+
+        company_logo = self.env.company.logo
+        logo_image = None
+
+        if company_logo:
+            logo_image = io.BytesIO(
+                base64.b64decode(company_logo)
+            )
+
+        logo_format = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'font_size': 8,
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        title_format = workbook.add_format({
+            'bold': True,
+            'font_size': 10,
+            'align': 'center',
+            'valign': 'vcenter',
+            'text_wrap': True,
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        asset_number_format = workbook.add_format({
+            'bold': True,
+            'font_size': 9,
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        month_format = workbook.add_format({
+            'bold': True,
+            'font_size': 8,
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        year_format = workbook.add_format({
+            'bold': True,
+            'font_size': 8,
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        company_format = workbook.add_format({
+            'bold': True,
+            'font_size': 8,
+            'align': 'center',
+            'valign': 'vcenter',
+        })
+
+        company_border_format = workbook.add_format({
+            'bold': True,
+            'font_size': 12,
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        # ==========================================================
+        # GENERATE LABEL
+        #
+        # 3 HORIZONTAL × 5 VERTICAL
+        # 15 LABEL / PAGE
+        # ==========================================================
+
+        for index, asset in enumerate(self):
+
+            page_index = index // 15
+            position = index % 15
+
+            label_row = position // 3
+            label_col = position % 3
+
+            # ------------------------------------------------------
+            # COLUMN POSITION
+            #
+            # Label 1 = A:F
+            # Label 2 = H:M
+            # Label 3 = O:T
+            # ------------------------------------------------------
+
+            start_col = label_col * 7
+            end_col = start_col + 5
+
+            # ------------------------------------------------------
+            # ROW POSITION
+            #
+            # 4 rows per label
+            # 2 rows gap between label groups
+            # ------------------------------------------------------
+
+            start_row = (
+                page_index * 22
+                + label_row * 4
+            )
+
+            row_1 = start_row
+            row_2 = start_row + 1
+            row_3 = start_row + 2
+            row_4 = start_row + 3
+
+            # ======================================================
+            # ROW HEIGHT
+            # ======================================================
+
+            worksheet.set_row(row_1, 20)
+            worksheet.set_row(row_2, 20)
+            worksheet.set_row(row_3, 20)
+            worksheet.set_row(row_4, 18)
+
+            # ======================================================
+            # ASSET DATA
+            # ======================================================
+
+            category = (
+                asset.category_id.display_name
+                if asset.category_id
+                else ''
+            )
+
+            system_model = asset.system_model or ''
+
+            asset_number = asset.name or ''
+
+            # ------------------------------------------------------
+            # TITLE
+            # ------------------------------------------------------
+
+            title = category
+
+            if system_model:
+                title += f" ({system_model})"
+
+            # ======================================================
+            # DATE
+            # ======================================================
+
+            month = ''
+            year = ''
+
+            if asset.purchase_date:
+                month = asset.purchase_date.strftime('%b').upper()
+                year = asset.purchase_date.strftime('%Y')
+
+            # ======================================================
+            # LOGO
+            #
+            # A:B
+            # ======================================================
+
+            worksheet.merge_range(
+                row_1,
+                start_col,
+                row_2,
+                start_col,
+                '',
+                logo_format,
+            )
+
+            company_logo = self.env.company.logo
+
+            if company_logo:
+
+                logo_image = io.BytesIO(
+                    base64.b64decode(company_logo)
+                )
+
+                worksheet.insert_image(
+                    row_1,
+                    start_col,
+                    'company_logo.png',
+                    {
+                        'image_data': logo_image,
+
+                        'x_scale': 0.08,
+                        'y_scale': 0.08,
+
+                        'x_offset': 2,
+                        'y_offset': 5,
+
+                        'object_position': 1,
+                    }
+                )
+
+            # ======================================================
+            # TITLE
+            #
+            # C:F
+            # ======================================================
+
+            worksheet.merge_range(
+                row_1,
+                start_col + 1,
+                row_1,
+                end_col,
+                title,
+                title_format,
+            )
+
+            # ======================================================
+            # ASSET NUMBER
+            #
+            # C:D
+            # ======================================================
+
+            worksheet.merge_range(
+                row_2,
+                start_col + 1,
+                row_2,
+                start_col + 3,
+                asset_number,
+                asset_number_format,
+            )
+
+            # ======================================================
+            # MONTH
+            #
+            # E
+            # ======================================================
+
+            worksheet.write(
+                row_2,
+                start_col + 4,
+                month,
+                month_format,
+            )
+
+            # ======================================================
+            # YEAR
+            #
+            # F
+            # ======================================================
+
+            worksheet.write(
+                row_2,
+                start_col + 5,
+                year,
+                year_format,
+            )
+
+            # ======================================================
+            # COMPANY
+            #
+            # A:F
+            # ======================================================
+
+            worksheet.merge_range(
+                row_3,
+                start_col,
+                row_3,
+                end_col,
+                'PT. PORT AVANT LOGISTICS',
+                company_border_format,
+            )
+
+            # ======================================================
+            # EMPTY ROW
+            # ======================================================
+
+            worksheet.merge_range(
+                row_4,
+                start_col,
+                row_4,
+                end_col,
+                '',
+                company_format,
+            )
+
+        # ==========================================================
+        # PRINT AREA
+        # ==========================================================
+
+        total_pages = (len(self) + 14) // 15
+
+        total_rows = total_pages * 22
+
+        worksheet.print_area(
+            0,
+            0,
+            total_rows - 1,
+            19,
+        )
+
+        # ==========================================================
+        # PAGE BREAKS
+        # ==========================================================
+
+        page_breaks = []
+
+        for page in range(1, total_pages):
+            page_breaks.append(page * 22)
+
+        if page_breaks:
+            worksheet.set_h_pagebreaks(page_breaks)
+
+        # ==========================================================
+        # CLOSE WORKBOOK
+        # ==========================================================
+
+        workbook.close()
+
+        output.seek(0)
+
+        file_data = output.read()
+
+        output.close()
+
+        # ==========================================================
+        # CREATE ATTACHMENT
+        # ==========================================================
+
+        attachment = self.env['ir.attachment'].create({
+            'name': 'Asset_Labels.xlsx',
+            'type': 'binary',
+            'datas': base64.b64encode(file_data),
+            'mimetype': (
+                'application/vnd.openxmlformats-officedocument.'
+                'spreadsheetml.sheet'
+            ),
+            'res_model': 'itsm.asset',
+            'res_id': self[0].id,
+        })
+
+        # ==========================================================
+        # DOWNLOAD
+        # ==========================================================
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/%s?download=true' % attachment.id,
+            'target': 'self',
+        }
