@@ -219,34 +219,34 @@ class Asset(models.Model):
         # ==========================================================
 
         # Label 1
-        worksheet.set_column('A:A', 6)
-        worksheet.set_column('B:B', 4)
-        worksheet.set_column('C:C', 6)
-        worksheet.set_column('D:D', 6)
-        worksheet.set_column('E:E', 6)
-        worksheet.set_column('F:F', 6)
+        worksheet.set_column('A:A', 3.5)
+        worksheet.set_column('B:B', 2)
+        worksheet.set_column('C:C', 3)
+        worksheet.set_column('D:D', 3)
+        worksheet.set_column('E:E', 3)
+        worksheet.set_column('F:F', 3)
 
         # Gap
         worksheet.set_column('G:G', 2)
 
         # Label 2
-        worksheet.set_column('H:H', 6)
-        worksheet.set_column('I:I', 4)
-        worksheet.set_column('J:J', 6)
-        worksheet.set_column('K:K', 6)
-        worksheet.set_column('L:L', 6)
-        worksheet.set_column('M:M', 6)
+        worksheet.set_column('H:H', 3.5)
+        worksheet.set_column('I:I', 2)
+        worksheet.set_column('J:J', 3)
+        worksheet.set_column('K:K', 3)
+        worksheet.set_column('L:L', 3)
+        worksheet.set_column('M:M', 3)
 
         # Gap
         worksheet.set_column('N:N', 2)
 
         # Label 3
-        worksheet.set_column('O:O', 6)
-        worksheet.set_column('P:P', 4)
-        worksheet.set_column('Q:Q', 6)
-        worksheet.set_column('R:R', 6)
-        worksheet.set_column('S:S', 6)
-        worksheet.set_column('T:T', 6)
+        worksheet.set_column('O:O', 3.5)
+        worksheet.set_column('P:P', 2)
+        worksheet.set_column('Q:Q', 3)
+        worksheet.set_column('R:R', 3)
+        worksheet.set_column('S:S', 3)
+        worksheet.set_column('T:T', 3)
 
         # ==========================================================
         # FORMAT
@@ -270,7 +270,7 @@ class Asset(models.Model):
 
         title_format = workbook.add_format({
             'bold': True,
-            'font_size': 10,
+            'font_size': 8,
             'align': 'center',
             'valign': 'vcenter',
             'text_wrap': True,
@@ -280,7 +280,7 @@ class Asset(models.Model):
 
         asset_number_format = workbook.add_format({
             'bold': True,
-            'font_size': 9,
+            'font_size': 6,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -289,7 +289,7 @@ class Asset(models.Model):
 
         month_format = workbook.add_format({
             'bold': True,
-            'font_size': 8,
+            'font_size': 6,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -298,7 +298,7 @@ class Asset(models.Model):
 
         year_format = workbook.add_format({
             'bold': True,
-            'font_size': 8,
+            'font_size': 6,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -314,7 +314,7 @@ class Asset(models.Model):
 
         company_border_format = workbook.add_format({
             'bold': True,
-            'font_size': 12,
+            'font_size': 8,
             'align': 'center',
             'valign': 'vcenter',
             'border': 1,
@@ -368,9 +368,9 @@ class Asset(models.Model):
             # ROW HEIGHT
             # ======================================================
 
-            worksheet.set_row(row_1, 20)
-            worksheet.set_row(row_2, 20)
-            worksheet.set_row(row_3, 20)
+            worksheet.set_row(row_1, 15)
+            worksheet.set_row(row_2, 15)
+            worksheet.set_row(row_3, 15)
             worksheet.set_row(row_4, 18)
 
             # ======================================================
@@ -422,8 +422,8 @@ class Asset(models.Model):
                     {
                         'image_data': logo_image,
 
-                        'x_scale': 0.08,
-                        'y_scale': 0.08,
+                        'x_scale': 0.05,
+                        'y_scale': 0.05,
 
                         'x_offset': 2,
                         'y_offset': 5,
