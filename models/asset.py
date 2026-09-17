@@ -377,24 +377,9 @@ class Asset(models.Model):
             # ASSET DATA
             # ======================================================
 
-            category = (
-                asset.category_id.display_name
-                if asset.category_id
-                else ''
-            )
-
-            system_model = asset.system_model or ''
+            title = asset.specification or ''
 
             asset_number = asset.name or ''
-
-            # ------------------------------------------------------
-            # TITLE
-            # ------------------------------------------------------
-
-            title = category
-
-            if system_model:
-                title += f" ({system_model})"
 
             # ======================================================
             # DATE
