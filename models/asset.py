@@ -175,10 +175,6 @@ class Asset(models.Model):
         if not self:
             return False
 
-        # ==========================================================
-        # CREATE EXCEL IN MEMORY
-        # ==========================================================
-
         output = io.BytesIO()
 
         workbook = xlsxwriter.Workbook(
@@ -250,9 +246,6 @@ class Asset(models.Model):
         worksheet.set_column('S:S', 3)
         worksheet.set_column('T:T', 3)
 
-        # ==========================================================
-        # FORMAT
-        # ==========================================================
 
         company_logo = self.env.company.logo
         logo_image = None
@@ -325,9 +318,6 @@ class Asset(models.Model):
 
         # ==========================================================
         # GENERATE LABEL
-        #
-        # 3 HORIZONTAL × 5 VERTICAL
-        # 15 LABEL / PAGE
         # ==========================================================
 
         for index, asset in enumerate(self):
@@ -380,7 +370,6 @@ class Asset(models.Model):
             # ======================================================
 
             title = asset.specification or ''
-
             asset_number = asset.name or ''
 
             # ======================================================
@@ -400,14 +389,7 @@ class Asset(models.Model):
             # A:B
             # ======================================================
 
-            worksheet.merge_range(
-                row_1,
-                start_col,
-                row_2,
-                start_col,
-                '',
-                logo_format,
-            )
+            worksheet.merge_range(row_1,start_col,row_2,start_col,'',logo_format)
 
             company_logo = self.env.company.logo
 
@@ -436,114 +418,544 @@ class Asset(models.Model):
 
             # ======================================================
             # TITLE
-            #
             # C:F
             # ======================================================
 
-            worksheet.merge_range(
-                row_1,
-                start_col + 1,
-                row_1,
-                end_col,
-                title,
-                title_format,
-            )
+            worksheet.merge_range(row_1,start_col + 1,row_1,end_col,title,title_format)
 
             # ======================================================
             # ASSET NUMBER
-            #
             # C:D
             # ======================================================
 
-            worksheet.merge_range(
-                row_2,
-                start_col + 1,
-                row_2,
-                start_col + 3,
-                asset_number,
-                asset_number_format,
-            )
+            worksheet.merge_range(row_2,start_col + 1,row_2,start_col + 3,asset_number,asset_number_format)
 
             # ======================================================
             # MONTH
-            #
             # E
             # ======================================================
 
-            worksheet.write(
-                row_2,
-                start_col + 4,
-                month,
-                month_format,
-            )
+            worksheet.write(row_2,start_col + 4,month,month_format)
 
             # ======================================================
             # YEAR
-            #
             # F
             # ======================================================
 
-            worksheet.write(
-                row_2,
-                start_col + 5,
-                year,
-                year_format,
-            )
+            worksheet.write(row_2,start_col + 5,year,year_format)
 
             # ======================================================
             # COMPANY
-            #
             # A:F
             # ======================================================
 
-            worksheet.merge_range(
-                row_3,
-                start_col,
-                row_3,
-                end_col,
-                'PT. PORT AVANT LOGISTICS',
-                company_border_format,
-            )
+            worksheet.merge_range(row_3,start_col,row_3,end_col,'PT. PORT AVANT LOGISTICS',company_border_format)
 
             # ======================================================
             # EMPTY ROW
             # ======================================================
 
-            worksheet.merge_range(
-                row_4,
-                start_col,
-                row_4,
-                end_col,
-                '',
-                company_format,
-            )
+            worksheet.merge_range(row_4,start_col,row_4,end_col,'',company_format)
 
         # ==========================================================
         # PRINT AREA
         # ==========================================================
 
         total_pages = (len(self) + 44) // 45
-
         total_rows = total_pages * 62
-
-        worksheet.print_area(
-            0,
-            0,
-            total_rows - 1,
-            19,
-        )
+        worksheet.print_area(0,0,total_rows - 1,19)
 
         # ==========================================================
         # PAGE BREAKS
         # ==========================================================
 
         page_breaks = []
-
         for page in range(1, total_pages):
             page_breaks.append(page * 62)
-
         if page_breaks:
             worksheet.set_h_pagebreaks(page_breaks)
+
+        # ==========================================================
+        # CLOSE WORKBOOK
+        # ==========================================================
+
+        workbook.close()
+        output.seek(0)
+        file_data = output.read()
+        output.close()
+
+        # ==========================================================
+        # CREATE ATTACHMENT
+        # ==========================================================
+
+        attachment = self.env['ir.attachment'].create({
+            'name': 'Asset_Labels.xlsx',
+            'type': 'binary',
+            'datas': base64.b64encode(file_data),
+            'mimetype': (
+                'application/vnd.openxmlformats-officedocument.'
+                'spreadsheetml.sheet'
+            ),
+            'res_model': 'itsm.asset',
+            'res_id': self[0].id,
+        })
+
+        # ==========================================================
+        # DOWNLOAD
+        # ==========================================================
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/%s?download=true' % attachment.id,
+            'target': 'self',
+        }
+
+
+    def action_generate_asset_excel(self):
+        if not self:
+            return False
+
+        # ==========================================================
+        # CREATE EXCEL IN MEMORY
+        # ==========================================================
+
+        output = io.BytesIO()
+
+        workbook = xlsxwriter.Workbook(
+            output,
+            {
+                'in_memory': True,
+            }
+        )
+
+        worksheet = workbook.add_worksheet('Assets')
+
+        # ==========================================================
+        # FORMAT
+        # ==========================================================
+
+        title_format = workbook.add_format({
+            'bold': True,
+            'font_size': 14,
+            'align': 'center',
+            'valign': 'vcenter',
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        header_format = workbook.add_format({
+            'bold': True,
+            'font_size': 10,
+            'align': 'center',
+            'valign': 'vcenter',
+            'text_wrap': True,
+            'border': 1,
+            'border_color': '#000000',
+            'bg_color': '#D9EAF7',
+        })
+
+        text_format = workbook.add_format({
+            'font_size': 9,
+            'valign': 'top',
+            'text_wrap': True,
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        center_format = workbook.add_format({
+            'font_size': 9,
+            'align': 'center',
+            'valign': 'vcenter',
+            'text_wrap': True,
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        date_format = workbook.add_format({
+            'font_size': 9,
+            'align': 'center',
+            'valign': 'vcenter',
+            'num_format': 'dd/mm/yyyy',
+            'border': 1,
+            'border_color': '#000000',
+        })
+
+        # ==========================================================
+        # COLUMN DEFINITION
+        # ==========================================================
+
+        columns = [
+            ('Asset Number', 'name'),
+            ('Category', 'category_id'),
+            ('Serial Number', 'serial_number'),
+            ('Purchase Date', 'purchase_date'),
+            ('Status', 'state'),
+            ('Used by', 'employee_id'),
+            ('Division', 'division_id'),
+            ('Specification', 'specification'),
+            ('Activation Number', 'activation_number'),
+            ('System Model', 'system_model'),
+            ('Brand', 'brand_id'),
+            ('Location', 'location_id'),
+            ('RAM', 'ram'),
+            ('Storage Type', 'storage_type'),
+            ('Storage Size', 'storage_size'),
+            ('Antivirus', 'antivirus'),
+            ('Antivirus Brands', 'antivirus_brand'),
+            ('Charger', 'charger'),
+            ('Mouse', 'mouse'),
+            ('Keyboard', 'keyboard'),
+            ('Notes', 'notes'),
+            ('UPS', 'has_ups'),
+            ('UPS Number', 'ups_asset_id'),
+            ('Used By PC', 'pc_asset_ids'),
+            ('Is PC', 'is_pc'),
+            ('Is UPS', 'is_ups'),
+            ('License', 'lisence_id'),
+            ('Antivirus Software', 'antivirus_license_id'),
+            ('Picture', 'asset_image'),
+        ]
+
+        # ==========================================================
+        # TITLE
+        # ==========================================================
+
+        total_columns = len(columns)
+        worksheet.merge_range(
+            0,
+            0,
+            0,
+            total_columns - 1,
+            'ASSET LIST',
+            title_format,
+        )
+
+        worksheet.set_row(0, 25)
+
+        # ==========================================================
+        # HEADER
+        # ==========================================================
+
+        header_row = 2
+
+        for col, (label, field_name) in enumerate(columns):
+            worksheet.write(
+                header_row,
+                col,
+                label,
+                header_format,
+            )
+
+        worksheet.set_row(header_row, 30)
+
+        # ==========================================================
+        # SELECTION LABELS
+        # ==========================================================
+
+        state_selection = dict(
+            self._fields['state'].selection
+        )
+
+        ram_selection = dict(
+            self._fields['ram'].selection
+        )
+
+        storage_type_selection = dict(
+            self._fields['storage_type'].selection
+        )
+
+        storage_size_selection = dict(
+            self._fields['storage_size'].selection
+        )
+
+        # ==========================================================
+        # WRITE ASSET DATA
+        # ==========================================================
+
+        for row, asset in enumerate(
+            self,
+            start=header_row + 1
+        ):
+
+            # ------------------------------------------------------
+            # ASSET NUMBER
+            # ------------------------------------------------------
+
+            worksheet.write(row,0,asset.name or '',text_format)
+
+            # ------------------------------------------------------
+            # CATEGORY
+            # ------------------------------------------------------
+
+            worksheet.write(row,1,asset.category_id.display_name if asset.category_id else '',text_format)
+
+            # ------------------------------------------------------
+            # SERIAL NUMBER
+            # ------------------------------------------------------
+
+            worksheet.write(row,2,asset.serial_number or '',text_format)
+
+            # ------------------------------------------------------
+            # PURCHASE DATE
+            # ------------------------------------------------------
+
+            if asset.purchase_date:
+                purchase_date = fields.Date.from_string(
+                    asset.purchase_date
+                )
+
+                worksheet.write_datetime(
+                    row,
+                    3,
+                    purchase_date,
+                    date_format,
+                )
+            else:
+                worksheet.write(
+                    row,
+                    3,
+                    '',
+                    date_format,
+                )
+
+            # ------------------------------------------------------
+            # STATUS
+            # ------------------------------------------------------
+
+            worksheet.write(row,4,state_selection.get(asset.state,'') if asset.state else '',center_format)
+
+            # ------------------------------------------------------
+            # USED BY
+            # ------------------------------------------------------
+
+            worksheet.write(row,5,asset.employee_id.display_name if asset.employee_id else '', text_format)
+
+            # ------------------------------------------------------
+            # DIVISION
+            # ------------------------------------------------------
+
+            worksheet.write(row,6,asset.division_id.display_name if asset.division_id else '', text_format)
+
+            # ------------------------------------------------------
+            # SPECIFICATION
+            # ------------------------------------------------------
+
+            worksheet.write(row, 7, asset.specification or '', text_format)
+
+            # ------------------------------------------------------
+            # ACTIVATION NUMBER
+            # ------------------------------------------------------
+
+            worksheet.write(row,8,asset.activation_number or '',text_format)
+
+            # ------------------------------------------------------
+            # SYSTEM MODEL
+            # ------------------------------------------------------
+
+            worksheet.write(row,9,asset.system_model or '', text_format)
+
+            # ------------------------------------------------------
+            # BRAND
+            # ------------------------------------------------------
+
+            worksheet.write(row,10, asset.brand_id.display_name if asset.brand_id else '', text_format)
+
+            # ------------------------------------------------------
+            # LOCATION
+            # ------------------------------------------------------
+
+            worksheet.write(row,11,asset.location_id.display_name if asset.location_id else '', text_format)
+
+            # ------------------------------------------------------
+            # RAM
+            # ------------------------------------------------------
+
+            worksheet.write(row,12,ram_selection.get(asset.ram,'') if asset.ram else '',center_format)
+
+            # ------------------------------------------------------
+            # STORAGE TYPE
+            # ------------------------------------------------------
+
+            worksheet.write(row,13,storage_type_selection.get(asset.storage_type,'') if asset.storage_type else '',center_format)
+
+            # ------------------------------------------------------
+            # STORAGE SIZE
+            # ------------------------------------------------------
+
+            worksheet.write(row,14,storage_size_selection.get(asset.storage_size,'') if asset.storage_size else '',center_format)
+
+            # ------------------------------------------------------
+            # ANTIVIRUS
+            # ------------------------------------------------------
+
+            worksheet.write(row,15,'Yes' if asset.antivirus else 'No',center_format)
+
+            # ------------------------------------------------------
+            # ANTIVIRUS BRANDS
+            # ------------------------------------------------------
+
+            worksheet.write(row,16,asset.antivirus_brand or '',text_format)
+
+            # ------------------------------------------------------
+            # CHARGER
+            # ------------------------------------------------------
+
+            worksheet.write(row,17,'Yes' if asset.charger else 'No',center_format)
+
+            # ------------------------------------------------------
+            # MOUSE
+            # ------------------------------------------------------
+
+            worksheet.write(row,18,'Yes' if asset.mouse else 'No',center_format)
+
+            # ------------------------------------------------------
+            # KEYBOARD
+            # ------------------------------------------------------
+
+            worksheet.write(row,19,'Yes' if asset.keyboard else 'No',center_format)
+
+            # ------------------------------------------------------
+            # NOTES
+            # ------------------------------------------------------
+
+            worksheet.write(row,20,asset.notes or '',text_format,)
+
+            # ------------------------------------------------------
+            # UPS
+            # ------------------------------------------------------
+
+            worksheet.write(row,21,'Yes' if asset.has_ups else 'No',center_format)
+
+            # ------------------------------------------------------
+            # UPS NUMBER
+            # ------------------------------------------------------
+
+            worksheet.write(row,22,asset.ups_asset_id.display_name if asset.ups_asset_id else '',text_format,)
+
+            # ------------------------------------------------------
+            # USED BY PC
+            # ------------------------------------------------------
+
+            pc_names = ', '.join(asset.pc_asset_ids.mapped('name'))
+            worksheet.write(row,23, pc_names,text_format)
+
+            # ------------------------------------------------------
+            # IS PC
+            # ------------------------------------------------------
+
+            worksheet.write(row, 24, 'Yes' if asset.is_pc else 'No', center_format)
+
+            # ------------------------------------------------------
+            # IS UPS
+            # ------------------------------------------------------
+
+            worksheet.write(row, 25, 'Yes' if asset.is_ups else 'No',center_format)
+
+            # ------------------------------------------------------
+            # LICENSE
+            # ------------------------------------------------------
+
+            worksheet.write(row, 26, asset.lisence_id.display_name if asset.lisence_id else '',text_format)
+            
+            # ------------------------------------------------------
+            # ANTIVIRUS SOFTWARE
+            # ------------------------------------------------------
+
+            worksheet.write(row,27,asset.antivirus_license_id.display_name if asset.antivirus_license_id else '', text_format)
+
+            # ------------------------------------------------------
+            # PICTURE
+            # ------------------------------------------------------
+
+            worksheet.write(row,28,'Yes' if asset.asset_image else 'No',center_format)
+            worksheet.set_row(row, 45,)
+
+        # ==========================================================
+        # COLUMN WIDTH
+        # ==========================================================
+
+        widths = [
+            18,  # Asset Number
+            18,  # Category
+            20,  # Serial Number
+            14,  # Purchase Date
+            14,  # Status
+            22,  # Used by
+            20,  # Division
+            35,  # Specification
+            22,  # Activation Number
+            22,  # System Model
+            18,  # Brand
+            22,  # Location
+            12,  # RAM
+            15,  # Storage Type
+            15,  # Storage Size
+            12,  # Antivirus
+            25,  # Antivirus Brands
+            12,  # Charger
+            12,  # Mouse
+            12,  # Keyboard
+            30,  # Notes
+            10,  # UPS
+            18,  # UPS Number
+            25,  # Used By PC
+            10,  # Is PC
+            10,  # Is UPS
+            22,  # License
+            25,  # Antivirus Software
+            12,  # Picture
+        ]
+
+        for col, width in enumerate(widths):
+            worksheet.set_column(
+                col,
+                col,
+                width,
+            )
+
+        # ==========================================================
+        # FREEZE HEADER
+        # ==========================================================
+
+        worksheet.freeze_panes(
+            header_row + 1,
+            0,
+        )
+
+        # ==========================================================
+        # FILTER
+        # ==========================================================
+
+        worksheet.autofilter(
+            header_row,
+            0,
+            header_row + len(self),
+            total_columns - 1,
+        )
+
+        # ==========================================================
+        # PAGE SETUP
+        # ==========================================================
+
+        worksheet.set_landscape()
+        worksheet.set_paper(9)
+
+        worksheet.set_margins(
+            left=0.25,
+            right=0.25,
+            top=0.50,
+            bottom=0.50,
+        )
+
+        worksheet.fit_to_pages(
+            1,
+            0,
+        )
+
+        worksheet.repeat_rows(
+            header_row,
+            header_row,
+        )
 
         # ==========================================================
         # CLOSE WORKBOOK
@@ -562,7 +974,7 @@ class Asset(models.Model):
         # ==========================================================
 
         attachment = self.env['ir.attachment'].create({
-            'name': 'Asset_Labels.xlsx',
+            'name': 'Asset_List.xlsx',
             'type': 'binary',
             'datas': base64.b64encode(file_data),
             'mimetype': (

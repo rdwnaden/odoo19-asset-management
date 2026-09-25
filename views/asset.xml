@@ -151,12 +151,21 @@
     </record>
     
     <record id="action_generate_asset_label" model="ir.actions.server">
-        <field name="name">Generate Asset Label</field>
+        <field name="name">Generate Label</field>
         <field name="model_id" ref="asset_management.model_itsm_asset"/>
         <field name="binding_model_id" ref="asset_management.model_itsm_asset"/>
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">action = records.action_generate_asset_label()</field>
+    </record>
+
+    <record id="action_generate_asset_excel" model="ir.actions.server">
+        <field name="name">Generate Excel</field>
+        <field name="model_id" ref="model_itsm_asset"/>
+        <field name="binding_model_id" ref="model_itsm_asset"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">if records:action = records.action_generate_asset_excel()</field>
     </record>
 
 
