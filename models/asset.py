@@ -19,6 +19,8 @@ class Asset(models.Model):
         ('available', 'Available'),
         ('repair', 'Repair'),
         ('borrowed', 'Borrowed'),
+        ('damaged', 'Damaged'),
+        ('disposal', 'Disposal'),
     ], string='Status', tracking=True)
     employee_id = fields.Many2one('itsm.employee', string='Used by', tracking=True)
     division_id = fields.Many2one('itsm.division', string='Division', tracking=True)

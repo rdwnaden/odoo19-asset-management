@@ -141,6 +141,20 @@
                                         </strong>
                                     </span>
 
+                                    <span>
+                                        Damaged:
+                                        <strong>
+                                            <t t-esc="cat.damaged"/>
+                                        </strong>
+                                    </span>
+
+                                    <span>
+                                        Disposal:
+                                        <strong>
+                                            <t t-esc="cat.disposal"/>
+                                        </strong>
+                                    </span>
+
                                 </div>
                             </div>
                         </div>
