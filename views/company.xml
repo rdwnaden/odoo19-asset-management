@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="itsm_company_view_form" model="ir.ui.view">
+        <field name="name">itsm.company.view.form</field>
+        <field name="model">itsm.company</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="itsm_company_view_tree" model="ir.ui.view">
+        <field name="name">itsm.company.view.tree</field>
+        <field name="model">itsm.company</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="company_action" model="ir.actions.act_window">
+        <field name="name">Company List</field>
+        <field name="res_model">itsm.company</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Asset Menu -->
+    <menuitem id="menu_asset_company"
+            name="Company"
+            parent="menu_asset_configuration"
+            action="company_action"
+            sequence="60"/>
+
+</odoo>

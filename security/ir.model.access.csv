@@ -5,6 +5,7 @@ access_itsm_division,itsm.division,model_itsm_division,,1,1,1,1
 access_itsm_category,itsm.category,model_itsm_category,,1,1,1,1
 access_itsm_brands,itsm.brands,model_itsm_brands,,1,1,1,1
 access_itsm_location,itsm.location,model_itsm_location,,1,1,1,1
+access_itsm_company,itsm.company,model_itsm_company,,1,1,1,1
 
 access_asset_stock_item,asset.stock.item,model_asset_stock_item,base.group_user,1,1,1,1
 access_asset_stock_receipt,asset.stock.receipt,model_asset_stock_receipt,base.group_user,1,1,1,1

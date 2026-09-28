@@ -30,6 +30,7 @@ Long description of module's purpose
         'views/category.xml',
         'views/brands.xml',
         'views/location.xml',
+        'views/company.xml',
         'views/dashboard_menu.xml',
 
         'views/stock_item.xml',

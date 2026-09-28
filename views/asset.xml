@@ -36,6 +36,7 @@
                             <field name="employee_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="division_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="location_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="company_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="state"/>
                         </group>
                     </group>
@@ -81,6 +82,7 @@
                                     <field name="employee_id"/>
                                     <field name="division_id"/>
                                     <field name="location_id"/>
+                                    <field name="company_id"/>
                                     <field name="state"/>
                                 </list>
                             </field>
@@ -120,6 +122,7 @@
                 <field name="employee_id" width="120"/>
                 <field name="division_id"/>
                 <field name="location_id"/>
+                <field name="company_id"/>
                 <field name="state" width="70"/>
                 <field name="notes"/>
                 <field name="antivirus" width="120" optional="hide"/>

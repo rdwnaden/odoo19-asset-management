@@ -30,6 +30,7 @@ class Asset(models.Model):
     system_model = fields.Char('System Model', tracking=True)
     brand_id = fields.Many2one('itsm.brands', string='Brand', tracking=True)
     location_id = fields.Many2one('itsm.location', string='Location', tracking=True)
+    company_id = fields.Many2one('itsm.company', string='Company', tracking=True)
     ram = fields.Selection([
         ('4gb', '4GB'),
         ('8gb', '8GB'),

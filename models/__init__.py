@@ -4,6 +4,7 @@ from . import division
 from . import category
 from . import brands
 from . import location
+from . import company
 from . import asset_dashboard
 
 from . import stock_item
