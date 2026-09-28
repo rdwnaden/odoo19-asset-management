@@ -20,6 +20,7 @@ export class AssetDashboard extends Component {
             borrowed: 0,
             damaged: 0,
             disposal: 0,
+            sold: 0,
 
             // Asset By Category
             // category_labels: [],
@@ -169,6 +170,7 @@ export class AssetDashboard extends Component {
                     "Borrowed",
                     "damaged",
                     "disposal",
+                    "sold",
                 ],
                 datasets: [{
                     data: [
@@ -178,10 +180,12 @@ export class AssetDashboard extends Component {
                         this.data.borrowed,
                         this.data.damaged,
                         this.data.disposal,
+                        this.data.sold,
                     ],
                     backgroundColor: [
                         "#22C55E",
                         "#3B82F6",
+                        "#F97316",
                         "#F97316",
                         "#F97316",
                         "#F97316",

@@ -155,6 +155,13 @@
                                         </strong>
                                     </span>
 
+                                    <span>
+                                        Sold:
+                                        <strong>
+                                            <t t-esc="cat.sold"/>
+                                        </strong>
+                                    </span>
+
                                 </div>
                             </div>
                         </div>
