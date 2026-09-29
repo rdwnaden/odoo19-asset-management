@@ -31,6 +31,7 @@
                             <field name="serial_number"/>
                             <field name="brand_id" options="{'no_open': True, 'no_create': True}"/>
                             <field name="purchase_date"/>
+                            <field name="asset_label_generated"/>
                         </group>
                         <group>
                             <field name="employee_id" options="{'no_open': True, 'no_create': True}"/>
@@ -125,6 +126,7 @@
                 <field name="company_id"/>
                 <field name="state" width="70"/>
                 <field name="notes"/>
+                <field name="asset_label_generated" optional="hide"/>
                 <field name="antivirus" width="120" optional="hide"/>
                 <field name="antivirus_brand" invisible="not antivirus" width="120" optional="hide"/>
                 <field name="charger" width="120" optional="hide"/>
