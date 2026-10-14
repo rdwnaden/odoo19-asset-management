@@ -1,4 +1,7 @@
 from odoo import api, models
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -130,6 +133,55 @@ class AssetDashboard(models.AbstractModel):
             })
 
         return result
+
+
+    @api.model
+    def get_old_purchase_asset_data(self):
+        Asset = self.env["itsm.asset"]
+
+        # Batas tanggal: 4 tahun sebelum tanggal hari ini
+        cutoff_date = date.today() - relativedelta(years=4)
+
+        # Ambil aset dengan purchase_date lebih lama dari 4 tahun
+        assets = Asset.search([
+            ("purchase_date", "!=", False),
+            ("purchase_date", "<", cutoff_date.isoformat()),
+        ])
+
+        result = []
+
+        # Kelompokkan aset berdasarkan kategori
+        categories = assets.mapped("category_id")
+
+        for category in categories:
+            category_assets = assets.filtered(
+                lambda asset: asset.category_id.id == category.id
+            )
+
+            result.append({
+                "id": category.id,
+                "name": category.name,
+                "icon": category.icon or "fa-cube",
+                "count": len(category_assets),
+            })
+
+        # Aset yang tidak memiliki kategori
+        uncategorized_assets = assets.filtered(
+            lambda asset: not asset.category_id
+        )
+
+        if uncategorized_assets:
+            result.append({
+                "id": False,
+                "name": "Uncategorized",
+                "icon": "fa-cube",
+                "count": len(uncategorized_assets),
+            })
+
+        return {
+            "cutoff_date": cutoff_date.isoformat(),
+            "categories": result,
+        }
 
 
     @api.model

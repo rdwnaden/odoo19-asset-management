@@ -27,6 +27,11 @@ export class AssetDashboard extends Component {
             // category_values: [],
 
             categories: [],
+
+            old_purchase_categories: [],
+            purchase_date_cutoff: "",
+
+            antivirus_licenses: [],
         });
 
         this.categoryChart = null;
@@ -58,6 +63,18 @@ export class AssetDashboard extends Component {
             );
 
             this.data.categories = category;
+
+                        const oldPurchaseData = await this.orm.call(
+                "asset.dashboard",
+                "get_old_purchase_asset_data",
+                []
+            );
+
+            this.data.old_purchase_categories =
+                oldPurchaseData.categories;
+
+            this.data.purchase_date_cutoff =
+                oldPurchaseData.cutoff_date;
 
 
             const antivirusLicenses = await this.orm.call(
@@ -246,6 +263,34 @@ export class AssetDashboard extends Component {
 
             view_mode: "list,form",
             domain: [["category_id", "=", categoryId]],
+            target: "current",
+        });
+    }
+
+    openOldPurchasedCategory(categoryId) {
+
+        const domain = [
+            ["purchase_date", "!=", false],
+            ["purchase_date", "<", this.data.purchase_date_cutoff],
+        ];
+
+        // Filter kategori hanya jika kategori memiliki ID
+        if (categoryId) {
+            domain.push(["category_id", "=", categoryId]);
+        } else {
+            domain.push(["category_id", "=", false]);
+        }
+
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "Assets Purchased Over 4 Years",
+            res_model: "itsm.asset",
+            views: [
+                [false, "list"],
+                [false, "form"],
+            ],
+            view_mode: "list,form",
+            domain: domain,
             target: "current",
         });
     }
