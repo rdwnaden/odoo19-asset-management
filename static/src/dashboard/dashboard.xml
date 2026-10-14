@@ -234,7 +234,7 @@
             <div class="asset_chart_card">
                 <h4>
                     <i class="fa fa-calendar-times-o me-2"/>
-                    Date Purchased &gt; 4 Years
+                    Purchase Date &gt; 4 Years
                 </h4>
 
                 <p class="text-muted">
@@ -293,7 +293,7 @@
             <div class="asset_chart_card">
                 <h4>
                     <i class="fa fa-calendar-times-o me-2"/>
-                    Date Purchased &gt; 6 Years
+                    Purchase Date &gt; 6 Years
                 </h4>
 
                 <p class="text-muted">
