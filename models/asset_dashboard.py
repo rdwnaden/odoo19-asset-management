@@ -183,6 +183,50 @@ class AssetDashboard(models.AbstractModel):
             "categories": result,
         }
 
+    @api.model
+    def get_old_purchase_6_year_asset_data(self):
+        Asset = self.env["itsm.asset"]
+
+        cutoff_date = date.today() - relativedelta(years=6)
+
+        assets = Asset.search([
+            ("purchase_date", "!=", False),
+            ("purchase_date", "<", cutoff_date.isoformat()),
+        ])
+
+        result = []
+        categories = assets.mapped("category_id")
+
+        for category in categories:
+            category_assets = assets.filtered(
+                lambda asset: asset.category_id.id == category.id
+            )
+
+            result.append({
+                "id": category.id,
+                "name": category.name,
+                "icon": category.icon or "fa-cube",
+                "count": len(category_assets),
+            })
+
+        # Aset tanpa kategori
+        uncategorized_assets = assets.filtered(
+            lambda asset: not asset.category_id
+        )
+
+        if uncategorized_assets:
+            result.append({
+                "id": False,
+                "name": "Uncategorized",
+                "icon": "fa-cube",
+                "count": len(uncategorized_assets),
+            })
+
+        return {
+            "cutoff_date": cutoff_date.isoformat(),
+            "categories": result,
+        }
+
 
     @api.model
     def get_antivirus_license_data(self):

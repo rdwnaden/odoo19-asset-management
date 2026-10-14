@@ -31,6 +31,9 @@ export class AssetDashboard extends Component {
             old_purchase_categories: [],
             purchase_date_cutoff: "",
 
+            old_purchase_6_year_categories: [],
+            purchase_date_6_year_cutoff: "",
+
             antivirus_licenses: [],
         });
 
@@ -75,6 +78,18 @@ export class AssetDashboard extends Component {
 
             this.data.purchase_date_cutoff =
                 oldPurchaseData.cutoff_date;
+
+            const oldPurchase6YearData = await this.orm.call(
+                "asset.dashboard",
+                "get_old_purchase_6_year_asset_data",
+                []
+            );
+
+            this.data.old_purchase_6_year_categories =
+                oldPurchase6YearData.categories || [];
+
+            this.data.purchase_date_6_year_cutoff =
+                oldPurchase6YearData.cutoff_date || "";
 
 
             const antivirusLicenses = await this.orm.call(
@@ -289,6 +304,29 @@ export class AssetDashboard extends Component {
                 [false, "list"],
                 [false, "form"],
             ],
+            view_mode: "list,form",
+            domain: domain,
+            target: "current",
+        });
+    }
+
+    openOldPurchased6YearCategory(categoryId) {
+        const domain = [
+            ["purchase_date", "!=", false],
+            ["purchase_date", "<", this.data.purchase_date_6_year_cutoff],
+        ];
+
+        if (categoryId) {
+            domain.push(["category_id", "=", categoryId]);
+        } else {
+            domain.push(["category_id", "=", false]);
+        }
+
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "Assets Purchased Over 6 Years",
+            res_model: "itsm.asset",
+            views: [[false, "list"], [false, "form"]],
             view_mode: "list,form",
             domain: domain,
             target: "current",
