@@ -14,6 +14,7 @@ class Asset(models.Model):
     category_id = fields.Many2one('itsm.category', string='Category', tracking=True)
     serial_number = fields.Char(string='Serial Number', tracking=True)
     purchase_date = fields.Date('Purchase Date', tracking=True)
+    used_date = fields.Date('Used Date', tracking=True)
     state = fields.Selection([
         ('in_use', 'In Use'),
         ('available', 'Available'),
