@@ -60,6 +60,7 @@ class Asset(models.Model):
     charger = fields.Boolean('Charger', tracking=True)
     mouse = fields.Boolean('Mouse', tracking=True)
     keyboard = fields.Boolean('Keyboard', tracking=True)
+    bag = fields.Boolean('Bag', tracking=True)
     notes = fields.Text('Notes', tracking=True)
     #maintenance_ids = fields.One2many('itsm.maintenance', 'asset_id', string='Maintenance', readonly=True)
     #credential_ids = fields.One2many('itsm.credential', 'asset_id', string='Credentials', readonly=True)

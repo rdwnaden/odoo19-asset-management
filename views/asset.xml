@@ -69,6 +69,7 @@
                                 </group>
                                 <group>
                                     <field name="charger"/>
+                                    <field name="bag"/>
                                     <field name="mouse"/>
                                     <field name="keyboard"/>
                                 </group>
@@ -132,6 +133,7 @@
                 <field name="antivirus" width="120" optional="hide"/>
                 <field name="antivirus_brand" invisible="not antivirus" width="120" optional="hide"/>
                 <field name="charger" width="120" optional="hide"/>
+                <field name="bag" width="120" optional="hide"/>
                 <field name="mouse" width="120" optional="hide"/>
                 <field name="keyboard" width="120" optional="hide"/>
             </list>
