@@ -31,7 +31,7 @@ class Asset(models.Model):
     system_model = fields.Char('System Model', tracking=True)
     brand_id = fields.Many2one('itsm.brands', string='Brand', tracking=True)
     location_id = fields.Many2one('itsm.location', string='Location', tracking=True)
-    company_id = fields.Many2one('itsm.company', string='Company', tracking=True)
+    asset_company_id = fields.Many2one('itsm.company', string='Company', tracking=True)
     ram = fields.Selection([
         ('4gb', '4GB'),
         ('8gb', '8GB'),
@@ -480,7 +480,7 @@ class Asset(models.Model):
             # A:F
             # ======================================================
 
-            worksheet.merge_range(row_3,start_col,row_3,end_col,'PT. PORT AVANT LOGISTICS',company_border_format)
+            worksheet.merge_range(row_3,start_col,row_3,end_col,asset.asset_company_id.name,company_border_format)
 
             # ======================================================
             # EMPTY ROW
