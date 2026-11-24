@@ -20,6 +20,9 @@ class AssetStockItem(models.Model):
             ('pack', 'Pack'),
             ('roll', 'Roll'),
             ('set', 'Set'),
+            ('rim', 'Rim'),
+            ('lusin', 'Lusin'),
+            ('kodi', 'Kodi'),
         ],
         string="Unit",default="pcs", tracking=True)
 
