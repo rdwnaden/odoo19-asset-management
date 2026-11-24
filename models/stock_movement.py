@@ -8,7 +8,7 @@ class AssetStockMovement(models.Model):
     _order = "date desc"
 
     item_id = fields.Many2one("asset.stock.item",string="Item",required=True)
-    date = fields.Datetime(default=fields.Datetime.now)
+    date = fields.Date(string="date")
     movement_type = fields.Selection(
         [
             ("in", "Stock In"),

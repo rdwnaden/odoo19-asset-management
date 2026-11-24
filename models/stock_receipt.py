@@ -41,6 +41,7 @@ class AssetStockReceipt(models.Model):
                     "movement_type": "in",
                     "qty": line.qty,
                     "reference": receipt.name,
+                    "date": receipt.date,
                 })
             receipt.state = "done"
 

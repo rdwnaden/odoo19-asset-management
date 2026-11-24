@@ -65,6 +65,7 @@ class AssetStockIssue(models.Model):
                     "movement_type": "out",
                     "qty": line.qty,
                     "reference": issue.name,
+                    "date": issue.date,
                     "employee_id": issue.employee_id.id,
                     "division_id": issue.division_id.id,
                 })
